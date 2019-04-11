@@ -3,7 +3,8 @@ entity controller is -- single cycle control decoder
 	port (op, funct: in STD_LOGIC_VECTOR (5 downto 0);
 			zero: in STD_LOGIC;
 			memtoreg, memwrite: out STD_LOGIC;
-			pcsrc, alusrc: out STD_LOGIC;
+			pcsrc : out STD_LOGIC;
+      alusrc: out STD_LOGIC_VECTOR(1 downto 0);
 			regdst, regwrite: out STD_LOGIC;
 			jump: out STD_LOGIC;
 			alucontrol: out STD_LOGIC_VECTOR (5 downto 0));
