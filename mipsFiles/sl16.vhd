@@ -7,5 +7,5 @@ end;
 
 architecture behave of sl16 is
 begin
-  y <= a(15 downto 0) & "0000000000000000";
+  y <= a(15 downto 0) & X"0000";
 end;

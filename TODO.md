@@ -6,15 +6,14 @@ Entrer les points en ordre de priorite.
 
 2) Modifier Alu
 
-3) Modifier la taille de ALUSrc de 1 a 3 bits dans toutes les composantes
+3) Modifier la taille de ALUSrc de 1 a 3 bits dans toutes les composantes TODO
 
-4) Modifier la taille de Jump de 1 a 2 bits dans toutes les composantes
+4) Modifier la taille de Jump de 1 a 2 bits dans toutes les composantes TODO
 
-5) Modifier la taille de RegDst de 1 a 2 bits dans toutes les composantes
+5) Modifier la taille de RegDst de 1 a 2 bits dans toutes les composantes TODO
 
-6) Implementer un Mux8
+6) Implementer un Mux8 TODO
 
-7) Remplacer les Mux2 par des Mux4 
+7) Remplacer les Mux2 par des Mux4 TODO 
 
-8) Effectuer les nouveaux branchements
-
+8) Effectuer les nouveaux branchements TODO
