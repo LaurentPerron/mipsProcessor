@@ -4,9 +4,10 @@ entity controller is -- single cycle control decoder
 			zero: in STD_LOGIC;
 			memtoreg, memwrite: out STD_LOGIC;
 			pcsrc : out STD_LOGIC;
-      alusrc: out STD_LOGIC_VECTOR(1 downto 0);
-			regdst, regwrite: out STD_LOGIC;
-			jump: out STD_LOGIC;
+      alusrc: out STD_LOGIC_VECTOR(2 downto 0);
+			regdst: out STD_LOGIC_VECTOR(1 downto 0);
+      regwrite: out STD_LOGIC;
+			jump: out STD_LOGIC_VECTOR(1 downto 0);
 			alucontrol: out STD_LOGIC_VECTOR (5 downto 0));
 end;
 
@@ -14,9 +15,11 @@ architecture struct of controller is
 	component maindec
 		port (op: in STD_LOGIC_VECTOR (5 downto 0);
 				memtoreg, memwrite: out STD_LOGIC;
-				branch, alusrc: out STD_LOGIC;
-				regdst, regwrite: out STD_LOGIC;
-				jump: out STD_LOGIC;
+				branch: out STD_LOGIC;
+        alusrc: out STD_LOGIC_VECTOR (2 downto 0);
+				regdst: out STD_LOGIC_VECTOR (1 downto 0);
+        regwrite: out STD_LOGIC;
+				jump: out STD_LOGIC_VECTOR (1 downto 0);
 				aluop: out STD_LOGIC_VECTOR (1 downto 0));
 	end component;
 	component aludec

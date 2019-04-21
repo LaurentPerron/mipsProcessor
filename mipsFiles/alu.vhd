@@ -15,21 +15,20 @@ begin
 	diff <= a - b;
 	process (a, b, f, diff, shamt) begin
 		case f is
-			when "000000" => tmp <= b sll shamt; --31 left shift b << shamt
 			when "100000" => tmp <= a + b; --32 add
       when "100010" => tmp <= a - b; --34 sub
 			when "100100" => tmp <= a and b; --36 and
 			when "100101" => tmp <= a or b; --37 or
 			when "100110" => tmp <= a xor b; --38 xor
 			when "100111" => tmp <= not (a or b); --39 nor
-			when "000010" => tmp <= b srl shamt; --40 right shift b >> shamt
 			when "101010" => --SLT
 					if diff(31) = '1' then
 						tmp <= X"00000001";
 					else
 						tmp <= X"00000000";
 					end if;
-			when "000000" => tmp <= shl(b,shamt) ; -- 0 sll
+			when "000000" => tmp <= shl(b,shamt); -- 0 sll
+      when "000010" => tmp <= shr(b,shamt); -- 3 slr
 			when others => tmp <= X"00000000";
 		end case;
 	end process;
