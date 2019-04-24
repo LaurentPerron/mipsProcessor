@@ -15,7 +15,7 @@ architecture struct of proc_mips is
 				zero: in STD_LOGIC;
 				memtoreg, memwrite: out STD_LOGIC;
 				pcsrc : out STD_LOGIC;
-        alusrc: out STD_LOGIC_VECTOR (2 downto 0);
+        alusrc: out STD_LOGIC_VECTOR (1 downto 0);
 				regdst: out STD_LOGIC_VECTOR (1 downto 0);
         regwrite: out STD_LOGIC;
 				jump: out STD_LOGIC_VECTOR(1 downto 0);
@@ -24,7 +24,7 @@ architecture struct of proc_mips is
 	component datapath
 		port (clk, reset: in STD_LOGIC;
 				memtoreg, pcsrc: in STD_LOGIC;
-				alusrc: in STD_LOGIC_VECTOR (2 downto 0);
+				alusrc: in STD_LOGIC_VECTOR (1 downto 0);
         regdst: in STD_LOGIC_VECTOR (1 downto 0);
 				regwrite: in STD_LOGIC;
         jump: in STD_LOGIC_VECTOR (1 downto 0);
@@ -36,7 +36,7 @@ architecture struct of proc_mips is
 				readdata: in STD_LOGIC_VECTOR (31 downto 0));
 	end component;
 	signal memtoreg, regwrite, pcsrc: STD_LOGIC;
-  signal alusrc: STD_LOGIC_VECTOR (2 downto 0);
+  signal alusrc: STD_LOGIC_VECTOR (1 downto 0);
   signal regdst, jump: STD_LOGIC_VECTOR (1 downto 0);
 	signal zero: STD_LOGIC;
 	signal alucontrol: STD_LOGIC_VECTOR (5 downto 0);
