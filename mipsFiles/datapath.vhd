@@ -4,8 +4,9 @@ IEEE.STD_LOGIC_ARITH.all;
 entity datapath is -- MIPS datapath
 	port(	clk, reset: in STD_LOGIC;
 			memtoreg, pcsrc: in STD_LOGIC;
-			alusrc, regdst: in STD_LOGIC;
-			regwrite, jump: in STD_LOGIC;
+			alusrc, regdst: in STD_LOGIC_VECTOR (1 downto 0) ;
+			regwrite: in STD_LOGIC;
+      jump: in STD_LOGIC_VECTOR (1 downto 0);
 			alucontrol: in STD_LOGIC_VECTOR (5 downto 0);
 			zero, overflow: out STD_LOGIC;
 			pc: buffer STD_LOGIC_VECTOR (31 downto 0);
@@ -17,7 +18,8 @@ end;
 architecture struct of datapath is
 	component alu
 		port(	a, b: in STD_LOGIC_VECTOR(31 downto 0);
-				f: in STD_LOGIC_VECTOR (5 downto 0);
+        f: in STD_LOGIC_VECTOR (5 downto 0);
+        shamt: in STD_LOGIC_VECTOR (4 downto 0);
 				z, o : out STD_LOGIC;
 				y: buffer STD_LOGIC_VECTOR(31 downto 0));
 	end component;
@@ -50,7 +52,13 @@ architecture struct of datapath is
 				s: in STD_LOGIC;
 				y: out STD_LOGIC_VECTOR (width-1 downto 0));
 	end component;
-	signal writereg: STD_LOGIC_VECTOR (4 downto 0);
+  component mux4 is
+    generic (width: integer)
+      port(d0, d1, d2, d3: in STD_LOGIC_VECTOR(width-1 downto 0);
+           s:              in STD_LOGIC_VECTOR(width- 1 downto 0);
+           y:              in STD_LOGIC_VECTOR(width-1 downto 0));
+  end component;
+	signal writereg, shamt: STD_LOGIC_VECTOR (4 downto 0);
 	signal pcjump, pcnext, pcnextbr, pcplus4, pcbranch: STD_LOGIC_VECTOR (31 downto 0);
 	signal signimm, signimmsh: STD_LOGIC_VECTOR (31 downto 0);
 	signal srca, srcb, result: STD_LOGIC_VECTOR (31 downto 0);
@@ -71,5 +79,5 @@ begin
 	se: signext port map(instr(15 downto 0), signimm);
 -- ALU logic
 	srcbmux: mux2 generic map (32) port map(writedata, signimm, alusrc, srcb);
-	mainalu: alu port map(srca, srcb, alucontrol, zero, overflow, aluout);
+	mainalu: alu port map(srca, srcb, alucontrol, shamt, zero, overflow, aluout);
 end;
