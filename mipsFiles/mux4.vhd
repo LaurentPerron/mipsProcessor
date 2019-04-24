@@ -5,7 +5,7 @@ use IEEE.STD_LOGIC_UNSIGNED.all;
 entity mux4 is
   generic (width: integer)
   port(d0, d1, d2, d3: in STD_LOGIC_VECTOR(width-1 downto 0);
-       s:              in STD_LOGIC_VECTOR(width- 1 downto 0);
+       s:              in STD_LOGIC_VECTOR (1 downto 0);
        y:              in STD_LOGIC_VECTOR(width-1 downto 0));
 end;
 

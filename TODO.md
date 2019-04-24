@@ -2,8 +2,6 @@
 
 Entrer les points en ordre de priorite.
 
-0) Comprendre comment aller chercher la composante SHAMT TODO
+0) Écrire les testbenchs
 
-1) Remplacer les Mux2 par des Mux4 TODO 
-
-2) Effectuer les nouveaux branchements TODO
+1) Verifier le code et tester

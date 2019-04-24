@@ -59,30 +59,38 @@ architecture struct of datapath is
   component mux4 is
     generic (width: integer)
       port(d0, d1, d2, d3: in STD_LOGIC_VECTOR(width-1 downto 0);
-           s:              in STD_LOGIC_VECTOR(width-1 downto 0);
+           s:              in STD_LOGIC_VECTOR(1 downto 0);
            y:              in STD_LOGIC_VECTOR(width-1 downto 0));
   end component;
-	signal writereg: STD_LOGIC_VECTOR (4 downto 0);
+	signal writereg, ra, nullreg: STD_LOGIC_VECTOR (4 downto 0);
 	signal pcjump, pcnext, pcnextbr, pcplus4, pcbranch: STD_LOGIC_VECTOR (31 downto 0);
-	signal signimm, signimmsh: STD_LOGIC_VECTOR (31 downto 0);
+	signal signimm, signimmsh, zeroimm, upperimm: STD_LOGIC_VECTOR (31 downto 0);
 	signal srca, srcb, result: STD_LOGIC_VECTOR (31 downto 0);
 
 begin
 -- next PC logic
 	pcjump <= pcplus4 (31 downto 28) & instr (25 downto 0) & "00";
+-- return register logic
+  ra <= "11111";
 	pcreg: flopr generic map(32) port map(clk, reset, pcnext, pc);
 	pcadd1: adder port map(pc, X"00000004", pcplus4);
 	immsh: sl2 port map(signimm, signimmsh);
 	pcadd2: adder port map(pcplus4, signimmsh, pcbranch);
 	pcbrmux: mux2 generic map(32) port map(pcplus4, pcbranch, pcsrc, pcnextbr);
-	pcmux: mux2 generic map(32) port map(pcnextbr, pcjump, jump, pcnext); -- mux4
+  -- pcmux changed
+	pcmux: mux4 generic map(32) port map(pcnextbr, pcjump, srca, X"00000000", jump, pcnext); --mux4
+  -- new pcplus4 mux for jal instruction
+  jalmux: mux4 generic map(32) port map(result, pcplus4, X"00000000", X"00000000", jump, writereg);
 -- register file logic
 	rf: regfile port map(clk, regwrite, instr(25 downto 21),instr(20 downto 16), writereg, result, srca, writedata);
-	wrmux: mux2 generic map(5) port map(instr(20 downto 16),instr(15 downto 11), regdst, writereg);
--- mux4
+  -- write register mux changed
+	wrmux: mux4 generic map(5) port map(instr(20 downto 16),instr(15 downto 11), ra, nullreg, regdst, writereg); --mux4
 	resmux: mux2 generic map(32) port map(aluout, readdata, memtoreg, result);
 	se: signext port map(instr(15 downto 0), signimm);
+  ze: zeroext16 port map(instr(15 downto 0), zeroimm);
+  lui: sl2 port map(signimm, upperimm);
 -- ALU logic
-	srcbmux: mux2 generic map (32) port map(writedata, signimm, alusrc, srcb); --mux4
+  -- alucontrol mux changed
+	srcbmux: mux4 generic map (32) port map(writedata, signimm, zeroimm, upperim, alusrc, srcb); --mux4
 	mainalu: alu port map(srca, srcb, alucontrol, instr(10 downto 6), zero, overflow, aluout);
 end;
