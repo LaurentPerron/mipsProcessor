@@ -60,7 +60,7 @@ process (clk) begin
 	               else
 	                     report "test 5 echoué";
 	               end if;
-		when 84 => if(conv_integer(writedata) = 1) then
+		when 84 => if(writedata = X"8000FFFF") then
 			            report "test 6 réussi";
 	               else
 						report "test 6 echoué";
@@ -71,7 +71,7 @@ process (clk) begin
 						report "test 7 echoué";
 	               end if;
 	    when others => report "";
-	  end case;       
+	  end case;
 	end if;
 end process;
 end;
