@@ -65,7 +65,7 @@ architecture struct of datapath is
 	signal writereg, ra, nullreg: STD_LOGIC_VECTOR (4 downto 0);
 	signal pcjump, pcnext, pcnextbr, pcplus4, pcbranch: STD_LOGIC_VECTOR (31 downto 0);
 	signal signimm, signimmsh, zeroimm, upperimm: STD_LOGIC_VECTOR (31 downto 0);
-	signal srca, srcb, result: STD_LOGIC_VECTOR (31 downto 0);
+	signal srca, srcb, result, resultFinal: STD_LOGIC_VECTOR (31 downto 0);
 
 begin
 -- next PC logic
@@ -80,9 +80,9 @@ begin
   -- pcmux changed
 	pcmux: mux4 generic map(32) port map(pcnextbr, pcjump, srca, X"00000000", jump, pcnext); --mux4
   -- new pcplus4 mux for jal instruction
-  jalmux: mux4 generic map(32) port map(result, pcplus4, X"00000000", X"00000000", jump, writereg);
+  jalmux: mux4 generic map(32) port map(result, pcplus4, X"00000000", X"00000000", jump, resultFinal);
 -- register file logic
-	rf: regfile port map(clk, regwrite, instr(25 downto 21),instr(20 downto 16), writereg, result, srca, writedata);
+	rf: regfile port map(clk, regwrite, instr(25 downto 21),instr(20 downto 16), writereg, resultFinal, srca, writedata);
   -- write register mux changed
 	wrmux: mux4 generic map(5) port map(instr(20 downto 16),instr(15 downto 11), ra, nullreg, regdst, writereg); --mux4
 	resmux: mux2 generic map(32) port map(aluout, readdata, memtoreg, result);
